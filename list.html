@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="http://i.gtimg.cn/vipstyle/frozenui/2.0.0/css/frozen.css">
+    <link rel="stylesheet" href="./style.css">
+    <script src='./lib/jquery-3.3.1.min.js'></script>
+</head>
+<body>
+    <div class="main">
+        <h1 class="title">日记列表</h1>
+        <div>
+            <ul class="ui-list ui-border-tb " id='list'>
+            </ul>
+        </div>
+        <div class="ui-btn-wrap btn-wrap">
+            <button class="ui-btn ui-btn-primary" id='go'>写日记</button>
+        </div>
+        <div style="text-align: center;margin-top: 100px;">
+            <h6>星云日记基于星云链主网运行，永久保存您的心情。</h6>
+            <h6>
+                <a href="https://incentive.nebulas.io/cn/signup.html?invite=VwIkC" target="_blank">
+                    提交DAPP获得100NAS
+                </a>
+            </h6>
+            <img style="width: 200px;height: auto;" src="./img/logo.svg" alt="">
+        </div>
+    </div>
+</body>
+<script>
+    var list = window.localStorage.getItem('nasdiary')
+    if(list) {
+        list = JSON.parse(list).diarys
+    }
+
+    var html = ''
+    var unithtml = ''
+    for(i in list) {
+        unithtml = '<li>'+
+                '<div class="ui-list-info ui-border-t">'+
+                    '<h4 class="ui-nowrap">' + i + '</h4>'
+        for(j=0 ;j < list[i].daysItems.length; j++) {
+            unithtml += '<p>'+ list[i].daysItems[j].content +'</p><br />'
+        }
+        unithtml += '</div></li>'
+        html += unithtml
+    }
+
+    $('#list').html(html)
+    $('#go').click(function(e) {
+        e.preventDefault();
+        window.location.href = './add.html'
+    })
+</script>
+</html>

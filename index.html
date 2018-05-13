@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>星云日记</title>
+    <link rel="stylesheet" href="http://i.gtimg.cn/vipstyle/frozenui/2.0.0/css/frozen.css">
+    <link rel="stylesheet" href="./style.css">
+    <script src='./lib/jquery-3.3.1.min.js'></script>
+    <script src='./lib/nebulas.js'></script>
+    <script src='./lib/nebPay.js'></script>
+</head>
+
+<body>
+    <div class='main'>
+        <h1 class='title'>星云日记</h1>
+        <div class="ui-form ui-border-t main-form">
+            <form action="">
+                <div class="ui-form-item ui-border-b">
+                    <label>
+                        日记本名称
+                    </label>
+                    <input type="text" placeholder="请输入日记名称" id='name'>
+                    </a>
+                </div>
+                <div class="ui-form-item ui-border-b">
+                    <label>
+                        日记本密码
+                    </label>
+                    <input type="password" placeholder="请输入日记密码" id='password'>
+                </div>
+                <div class="ui-btn-wrap btn-wrap">
+                    <button class="ui-btn ui-btn-primary mr32" id='login'>进入日记本</button>
+                    <button class="ui-btn" id='new'>创建日记本</button>
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;margin-top: 100px;">
+            <h6>星云日记基于星云链主网运行，永久保存您的心情。</h6>
+            <h6>
+                <a href="https://incentive.nebulas.io/cn/signup.html?invite=VwIkC" target="_blank">
+                    提交DAPP获得100NAS
+                </a>
+            </h6>
+            <img style="width: 200px;height: auto;" src="./img/logo.svg" alt="">
+        </div>
+    </div>
+</body>
+
+<script>
+    "use strict";
+
+    var dappAddress = "n1pUDwteHXnkcPxaiY63TgMBRmzBVqn8ubH";
+
+    var nebulas = require("nebulas"),
+        Account = nebulas.Account,
+        neb = new nebulas.Neb();
+    neb.setRequest(new nebulas.HttpRequest("https://mainnet.nebulas.io"));
+
+    var NebPay = require("nebpay");
+    var nebPay = new NebPay();
+
+    //创建日记
+    $("#new").click(function (e) {
+        var name = $("#name").val()
+        var pass = $("#password").val()
+        if(name.trim() === '') {
+            alert('请输入日记本名称')
+            return
+        }
+        if(pass.trim() === '') {
+            alert('请输入日记本密码')
+            return
+        }
+        e.preventDefault()
+        var value = "0";
+        var callFunction = "createDiaryBook";
+        var callArgs = "[\"" + name + "\",\"" + pass + "\" ]"; //in the form of ["args"]
+
+        var to = dappAddress;
+        var value = "0";
+        var serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
+            listener: function (resp) {
+                console.log("response of push: " + JSON.stringify(resp))
+            }        //设置listener, 处理交易返回信息
+        });
+
+        var intervalQuery = setInterval(function () {
+            funcIntervalQuery();
+        }, 12000);
+
+        function funcIntervalQuery() {
+            nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
+                .then(function (resp) {
+                    console.log("tx result: " + resp)   //resp is a JSON string
+                    var respObject = JSON.parse(resp)
+                    if(respObject.code === 0){
+                        alert('星云日记本创建成功！')
+                        clearInterval(intervalQuery)
+                        window.localStorage.setItem('nasuserinfo', JSON.stringify(
+                            {
+                                name: name,
+                                pass: pass
+                            }
+                        ))
+                        window.location.href='./add.html'
+                    }
+                })
+                .catch(function (err) {
+                    console.log(err);
+                });
+        }
+    })
+
+    //获取日记
+    function getDiary() {
+        var name = $("#name").val()
+        var pass = $("#password").val()
+        if(name.trim() === '') {
+            alert('请输入日记本名称')
+            return
+        }
+        if(pass.trim() === '') {
+            alert('请输入日记本密码')
+            return
+        }
+        var from = Account.NewAccount().getAddressString();
+
+        var value = "0";
+        var nonce = "0"
+        var gas_price = "1"
+        var gas_limit = "2"
+        var callFunction = "getDiaryBook";
+        var callArgs = "[\"" + name + "\",\"" + pass + "\" ]"; //in the form of ["args"]
+        var contract = {
+            "function": callFunction,
+            "args": callArgs
+        }
+
+        neb.api.call(from, dappAddress, value, nonce, gas_price, gas_limit, contract).then(function (resp) {
+            window.localStorage.setItem('nasdiary', resp.result)
+            window.localStorage.setItem('nasuserinfo', JSON.stringify(
+                {
+                    name: name,
+                    pass: pass
+                }
+            ))
+            window.location.href = './list.html'
+        }).catch(function (err) {
+            //cbSearch(err)
+            console.log("error:" + err.message)
+        })
+    }
+
+    $('#login').click(function (e) {
+        e.preventDefault()
+        // $("#search_value").val() 搜索框内的值
+        getDiary()
+    })
+</script>
+
+</html>
