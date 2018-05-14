@@ -140,6 +140,10 @@
         }
 
         neb.api.call(from, dappAddress, value, nonce, gas_price, gas_limit, contract).then(function (resp) {
+            if(resp.result === 'null') {
+                alert('该日记本不存在，请创建日记本')
+                return
+            }
             window.localStorage.setItem('nasdiary', resp.result)
             window.localStorage.setItem('nasuserinfo', JSON.stringify(
                 {
