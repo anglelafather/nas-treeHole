@@ -50,9 +50,10 @@
     var html = ''
     var unithtml = ''
     for(i in list) {
+        var time = new Date(Number(list[i].timestamp))
         unithtml = '<li>'+
                 '<div class="ui-list-info ui-border-t">'+
-                    '<h4 class="ui-nowrap">' + i + '</h4>'
+                    '<h4 class="ui-nowrap">' + time.getFullYear() +'年'+(time.getMonth()+1)+'月'+time.getDate() +'日'+ '</h4>'
         for(j=0 ;j < list[i].daysItems.length; j++) {
             unithtml += '<p>'+ list[i].daysItems[j].content +'</p><br />'
         }
