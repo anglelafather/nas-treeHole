@@ -15,6 +15,9 @@
         <div id='author'></div>
         <div>
             <ul class="ui-list ui-border-tb " id='list'>
+                <p style='text-align: center'>
+                    暂无日记
+                </p>
             </ul>
         </div>
         <div class="ui-btn-wrap btn-wrap">
@@ -39,7 +42,9 @@
     }
 
     var user = window.localStorage.getItem('nasuserinfo')
-
+    if (!user) {
+        window.location.href = './index.html'
+    }
     $('#author').html('作者：' + JSON.parse(user).name)
 
     var html = ''
