@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>星云日记</title>
+    <title>星云树洞</title>
     <link rel="stylesheet" href="./frozen.css">
     <link rel="stylesheet" href="./style.css">
     <script src='./lib/jquery-3.3.1.min.js'></script>
@@ -15,30 +15,30 @@
 
 <body>
     <div class='main'>
-        <h1 class='title'>星云日记</h1>
+        <h1 class='title'>星云树洞</h1>
         <div class="ui-form ui-border-t main-form">
             <form action="">
                 <div class="ui-form-item ui-border-b">
                     <label>
-                        日记本名称
+                        树洞名称
                     </label>
-                    <input type="text" placeholder="请输入日记名称" id='name'>
+                    <input type="text" placeholder="请输入树洞名称" id='name'>
                     </a>
                 </div>
                 <div class="ui-form-item ui-border-b">
                     <label>
-                        日记本密码
+                        树洞密码
                     </label>
-                    <input type="password" placeholder="请输入日记密码" id='password'>
+                    <input type="password" placeholder="请输入树洞密码" id='password'>
                 </div>
                 <div class="ui-btn-wrap btn-wrap">
-                    <button class="ui-btn ui-btn-primary mr32" id='login'>进入日记本</button>
-                    <button class="ui-btn" id='new'>创建日记本</button>
+                    <button class="ui-btn ui-btn-primary mr32" id='login'>进入树洞</button>
+                    <button class="ui-btn" id='new'>创建树洞</button>
                 </div>
             </form>
         </div>
-        <div style="text-align: center;margin-top: 100px;">
-            <h6>星云日记基于星云链主网运行，永久保存您的心情。</h6>
+        <div style="text-align: center;margin-top: 60px;">
+            <h6 style='padding: 0 10px'>你是否有不能告人的秘密，或是某种内心里无法分享的纠结。但有强烈的倾诉欲，人总需要一个倾诉的地方，将心事找个树洞倾诉，星云树洞基于星云链主网运行，永久保存您的秘密。</h6>
             <h6>
                 <a href="https://incentive.nebulas.io/cn/signup.html?invite=VwIkC" target="_blank">
                     提交DAPP获得100NAS
@@ -62,16 +62,16 @@
     var NebPay = require("nebpay");
     var nebPay = new NebPay();
 
-    //创建日记
+    //创建树洞
     $("#new").click(function (e) {
         var name = $("#name").val()
         var pass = $("#password").val()
         if(name.trim() === '') {
-            alert('请输入日记本名称')
+            alert('请输入树洞名称')
             return
         }
         if(pass.trim() === '') {
-            alert('请输入日记本密码')
+            alert('请输入树洞密码')
             return
         }
         e.preventDefault()
@@ -97,7 +97,7 @@
                     console.log("tx result: " + resp)   //resp is a JSON string
                     var respObject = JSON.parse(resp)
                     if(respObject.code === 0){
-                        alert('星云日记本创建成功！')
+                        alert('星云树洞创建成功！')
                         clearInterval(intervalQuery)
                         window.localStorage.setItem('nasuserinfo', JSON.stringify(
                             {
@@ -114,16 +114,16 @@
         }
     })
 
-    //获取日记
+    //获取树洞
     function getDiary() {
         var name = $("#name").val()
         var pass = $("#password").val()
         if(name.trim() === '') {
-            alert('请输入日记本名称')
+            alert('请输入树洞名称')
             return
         }
         if(pass.trim() === '') {
-            alert('请输入日记本密码')
+            alert('请输入树洞密码')
             return
         }
         var from = Account.NewAccount().getAddressString();
@@ -141,7 +141,7 @@
 
         neb.api.call(from, dappAddress, value, nonce, gas_price, gas_limit, contract).then(function (resp) {
             if(resp.result === 'null') {
-                alert('该日记本不存在，请创建日记本')
+                alert('该树洞不存在，请创建树洞')
                 return
             }
             window.localStorage.setItem('nasdiary', resp.result)

@@ -15,15 +15,15 @@
 
 <body>
     <div class='main' style="padding: 50px 20px">
-        <h1 style='text-align: center;padding: 20px 0'>写日记</h1>
+        <h1 style='text-align: center;padding: 20px 0'>写树洞</h1>
         <div id='author'></div>
         <div class="main-form" style="text-align: center;margin-top: 20px;">
             <form action="">
                 <!-- <div class="ui-form-item ui-border-b">
                     <label>
-                        日记名称
+                        树洞名称
                     </label>
-                    <input type="text" placeholder="请输入日记名称">
+                    <input type="text" placeholder="请输入树洞名称">
                     </a>
                 </div>
                 <div class="ui-form-item ui-border-b">
@@ -34,21 +34,21 @@
                 </div> -->
                 <!-- <div class="ui-form-item ui-border-b">
                     <label>
-                        日记内容
+                        树洞内容
                     </label>
-                    <input type="password" placeholder="请输入日记内容">
+                    <input type="password" placeholder="请输入树洞内容">
                 </div> -->
                 <div style="border: 1px solid #e3e0e0">
-                    <textarea style="width: 86%;margin: 0 auto;padding: 5px;border: none;outline: none;" name="" id="content" cols="30" rows="10" placeholder="请输入日记内容"></textarea>
+                    <textarea style="width: 86%;margin: 0 auto;padding: 5px;border: none;outline: none;" name="" id="content" cols="30" rows="10" placeholder="请输入树洞内容"></textarea>
                 </div>
             <div class="ui-btn-wrap btn-wrap">
-                <button class="ui-btn ui-btn-primary" id='submit'>提交日记</button>
+                <button class="ui-btn ui-btn-primary" id='submit'>提交树洞</button>
             </div>
             </form>
         </div>
         <div class='logout' id='logout'>登出</div>
         <div style="text-align: center;margin-top: 100px;">
-            <h6>星云日记基于星云链主网运行，永久保存您的心情。</h6>
+            <h6>星云树洞基于星云链主网运行，永久保存您的心情。</h6>
             <h6>
                 <a href="https://incentive.nebulas.io/cn/signup.html?invite=VwIkC" target="_blank">
                     提交DAPP获得100NAS
@@ -64,7 +64,7 @@
         <div class="dot"></div>
         <div class="dot"></div>
         <div class="dot"></div>
-        <div>日记写入中...</div>
+        <div>秘密写入中...</div>
     </div>
 </body>
 <script>
@@ -92,7 +92,7 @@
     function setDiary() {
         var content = $('#content').val()
         if(content.trim() === '') {
-            alert('请输入日记内容')
+            alert('请输入秘密内容')
             return
         }
         var value = "0";
@@ -129,7 +129,7 @@
         //                 clearInterval(intervalQuery)
         //                 setTimeout(function() {
         //                     $('#loading').hide()
-        //                     alert('星云日记写入成功！')
+        //                     alert('星云树洞写入成功！')
         //                     getDiary()
         //                 }, 1000)
         //             }
@@ -147,7 +147,7 @@
                         clearInterval(intervalQuery)
                         setTimeout(function() {
                             $('#loading').hide()
-                            alert('星云日记写入成功！')
+                            alert('星云树洞写入成功！')
                             getDiary()
                         }, 2000)
                     }
@@ -163,7 +163,7 @@
         setDiary()
     })
 
-    //获取日记
+    //获取树洞
     function getDiary() {
         var from = Account.NewAccount().getAddressString();
 
