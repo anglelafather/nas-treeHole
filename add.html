@@ -105,19 +105,45 @@
         var serialNumber = nebPay.call(to, value, callFunction, callArgs, {    //使用nebpay的call接口去调用合约,
             listener: function (resp) {
                 console.log("response of push: " + JSON.stringify(resp))
+
+                var intervalQuery = setInterval(function () {
+                    funcIntervalQueryTemp(resp);
+                }, 5000);
             }        //设置listener, 处理交易返回信息
         });
 
-        var intervalQuery = setInterval(function () {
-            funcIntervalQuery();
-        }, 12000);
+        // var intervalQuery = setInterval(function () {
+        //     funcIntervalQuery();
+        // }, 12000);
 
-        function funcIntervalQuery() {
-            nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
-                .then(function (resp) {
-                    console.log("tx result: " + resp)   //resp is a JSON string
-                    var respObject = JSON.parse(resp)
-                    if (respObject.code === 0 && respObject.data && respObject.data.status === 1) {
+        var intervalQuery = setInterval(function () {
+            funcIntervalQueryTemp();
+        }, 6000);
+
+        // function funcIntervalQuery() {
+        //     nebPay.queryPayInfo(serialNumber)   //search transaction result from server (result upload to server by app)
+        //         .then(function (resp) {
+        //             console.log("tx result: " + resp)   //resp is a JSON string
+        //             var respObject = JSON.parse(resp)
+        //             if (respObject.code === 0 && respObject.data && respObject.data.status === 1) {
+        //                 clearInterval(intervalQuery)
+        //                 setTimeout(function() {
+        //                     $('#loading').hide()
+        //                     alert('星云日记写入成功！')
+        //                     getDiary()
+        //                 }, 1000)
+        //             }
+        //         })
+        //         .catch(function (err) {
+        //             console.log(err);
+        //         });
+        // }
+
+        function funcIntervalQueryTemp(transaction) {
+            if (transaction) {
+                neb.api.getTransactionReceipt(transaction.txhash).then(function (respObject) {
+                    console.log("tx result: " + JSON.stringify(respObject))
+                    if (respObject && respObject.status === 1) {
                         clearInterval(intervalQuery)
                         setTimeout(function() {
                             $('#loading').hide()
@@ -125,10 +151,11 @@
                             getDiary()
                         }, 2000)
                     }
-                })
-                .catch(function (err) {
-                    console.log(err);
+
+                }).catch(function (err) {
+                    console.log(err)
                 });
+            }
         }
     }
     $('#submit').click(function (e) {
@@ -163,7 +190,7 @@
     //退出登陆
     $('#logout').click(function() {
         window.localStorage.clear()
-        window.location.href = './index.html'        
+        window.location.href = './index.html'
     })
 </script>
 
