@@ -12,6 +12,7 @@
 <body>
     <div class="main">
         <h1 class="title">日记列表</h1>
+        <div id='author'></div>
         <div>
             <ul class="ui-list ui-border-tb " id='list'>
             </ul>
@@ -19,6 +20,7 @@
         <div class="ui-btn-wrap btn-wrap">
             <button class="ui-btn ui-btn-primary" id='go'>写日记</button>
         </div>
+        <div class='logout'>登出</div>
         <div style="text-align: center;margin-top: 100px;">
             <h6>星云日记基于星云链主网运行，永久保存您的心情。</h6>
             <h6>
@@ -35,6 +37,10 @@
     if(list) {
         list = JSON.parse(list).diarys
     }
+
+    var user = window.localStorage.getItem('nasuserinfo')
+
+    $('#author').html('作者：' + JSON.parse(user).name)
 
     var html = ''
     var unithtml = ''
@@ -53,6 +59,11 @@
     $('#go').click(function(e) {
         e.preventDefault();
         window.location.href = './add.html'
+    })
+    //退出登陆
+    $('#logout').click(function() {
+        window.localStorage.clear()
+        window.location.href = './index.html'
     })
 </script>
 </html>

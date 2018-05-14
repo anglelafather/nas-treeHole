@@ -16,7 +16,8 @@
 <body>
     <div class='main' style="padding: 50px 20px">
         <h1 style='text-align: center;padding: 20px 0'>写日记</h1>
-        <div class="main-form" style="text-align: center;">
+        <div id='author'></div>
+        <div class="main-form" style="text-align: center;margin-top: 20px;">
             <form action="">
                 <!-- <div class="ui-form-item ui-border-b">
                     <label>
@@ -45,6 +46,7 @@
             </div>
             </form>
         </div>
+        <div class='logout' id='logout'>登出</div>
         <div style="text-align: center;margin-top: 100px;">
             <h6>星云日记基于星云链主网运行，永久保存您的心情。</h6>
             <h6>
@@ -85,6 +87,8 @@
 
     info = JSON.parse(info)
 
+    $('#author').html('作者：' + info.name)
+
     function setDiary() {
         var content = $('#content').val()
         if(content.trim() === '') {
@@ -113,7 +117,7 @@
                 .then(function (resp) {
                     console.log("tx result: " + resp)   //resp is a JSON string
                     var respObject = JSON.parse(resp)
-                    if (respObject.code === 0) {
+                    if (respObject.code === 0 && respObject.data && respObject.data.status === 1) {
                         clearInterval(intervalQuery)
                         setTimeout(function() {
                             $('#loading').hide()
@@ -156,6 +160,11 @@
             console.log("error:" + err.message)
         })
     }
+    //退出登陆
+    $('#logout').click(function() {
+        window.localStorage.clear()
+        window.location.href = './index.html'        
+    })
 </script>
 
 </html>

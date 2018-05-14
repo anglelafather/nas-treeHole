@@ -85,3 +85,15 @@
     50% { width: 8px; height: 8px; margin-left: -4px; margin-top: 0; }
     90%, 100% { width: 16px; height: 16px;  margin-left: -8px;  margin-top: -4px; }
   }
+
+  .logout {
+      margin-top: 25px;
+      text-decoration: underline;
+      color: #12B7F5;
+      text-align: center;
+  }
+  #author {
+      text-align: right;
+      padding: 20px 20px 10px;
+      color: #777;
+  }
